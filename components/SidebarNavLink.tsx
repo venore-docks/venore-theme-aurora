@@ -15,12 +15,12 @@ import { SIDEBAR_COLLAPSE_TOOLTIP_COLLAPSED_CLASSES, SIDEBAR_COLLAPSE_TOOLTIP_LA
 // funciona também durante o SSR deste Client Component, por isso aria-current (e o estado inicial
 // aberto/fechado do accordion abaixo) já chegam corretos no primeiro HTML, sem salto pós-hidratação.
 //
-// 180px de max-width pro rótulo (não um número solto — é o que sobra dentro de
-// --sidebar-width-expanded=280px depois do padding do frame (px-5=20px×2), do padding do item
-// (px-3=12px×2) e do ícone+gap (20px+12px), replicando a matemática do protótipo de referência
-// pixel a pixel: 280 − 40 − 24 − 32 = 184 ≈ 180). Cortar o texto era o bug desta sessão. Sem barra
-// de marcação (border-l) nem em hover/active nem fixa — removida por pedido desta sessão, o
-// destaque de item ativo/hover é só bg/text (bg-accent/14, text-primary).
+// 168px de max-width pro rótulo (não um número solto — cópia deste tema recalcula pro rail
+// compacto do Aurora: --sidebar-width-expanded=240px (15rem) menos o padding do frame (px-3=
+// 12px×2, SidebarLeftSlot.tsx), o padding do item (px-2=8px×2) e o ícone+gap (20px+12px):
+// 240 − 24 − 16 − 32 = 168. O Venore Slime usa outro número (180px) porque tem sidebar mais larga
+// e padding maior — não dá pra copiar o valor, só a fórmula. Sem barra de marcação (border-l) nem
+// em hover/active nem fixa — o destaque de item ativo/hover é só bg/text (bg-primary/10).
 function isDescendantActive(item: MainNavItem, pathname: string | null): boolean {
   if (item.href === null) {
     return item.children.some((child) => isDescendantActive(child, pathname));
@@ -52,7 +52,14 @@ export function SidebarNavLink({ item, collapsed, isAdmin }: { item: MainNavItem
           aria-controls={contentId}
           data-active-ancestor={isActiveAncestor ? "true" : undefined}
           className={cn(
-            "group/sidebar-collapse-target relative flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm ui-motion-base outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            // Cópia deste tema: px-2 (não px-3) — Aurora tem --sidebar-width-collapsed bem mais
+            // compacta que o Venore Slime, então o padding do item também precisa ser mais justo
+            // (ver SidebarLeftSlot.tsx). gap-3 vira lg:gap-0 quando colapsado: mesmo com o rótulo
+            // em max-w-0, o `gap` do flex ainda reserva a distância entre ícone e rótulo — em
+            // 4.25rem de largura, esse "gap fantasma" de 12px é o que sobrava faltando e cortava
+            // o ícone (bug reportado).
+            "group/sidebar-collapse-target relative flex w-full cursor-pointer items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm ui-motion-base outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            collapsed && "lg:gap-0",
             isActiveAncestor ? "font-semibold text-primary" : "font-medium text-muted-foreground",
             "hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground",
           )}
@@ -96,7 +103,10 @@ export function SidebarNavLink({ item, collapsed, isAdmin }: { item: MainNavItem
       href={item.href}
       aria-current={isActive ? "page" : undefined}
       className={cn(
-        "group/sidebar-collapse-target relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm ui-motion-base outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        // Cópia deste tema: px-2 + lg:gap-0 quando colapsado — mesmo racional do botão de
+        // agregador acima (ver comentário ali).
+        "group/sidebar-collapse-target relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm ui-motion-base outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        collapsed && "lg:gap-0",
         isActive
           ? "bg-primary/10 font-semibold text-primary"
           : "font-medium text-muted-foreground hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground",

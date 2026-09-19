@@ -57,12 +57,17 @@ export function SidebarLeftSlot({
   return (
     <MobileNavDrawer
       asideClassName={cn(
-        // px-5 é fixo em qualquer breakpoint e em qualquer estado de collapsed — a faixa de
-        // largura do ícone não pode depender da largura do sidebar (bug desta sessão: padding
-        // não está na lista de propriedades de ui-motion-emphasis, então px-5→px-3 trocava
-        // instantaneamente enquanto a largura do <aside> ainda levava 300ms pra terminar,
-        // deslocando o ícone antes do fim da transição). Só `width` anima.
-        "relative flex h-full w-full flex-col px-5 py-6 text-foreground shadow-float lg:w-(--sidebar-width-expanded) lg:shrink-0 lg:border-r lg:shadow-none ui-motion-emphasis",
+        // px-3 (não px-5 como no Venore Slime) é fixo em qualquer breakpoint e em qualquer estado
+        // de collapsed — o padding não pode depender de `collapsed` (bug de referência: padding
+        // não está na lista de propriedades de ui-motion-emphasis, então um px condicional trocaria
+        // instantaneamente enquanto a largura do <aside> ainda leva 300ms pra terminar, deslocando
+        // o ícone antes do fim da transição). Só `width` anima.
+        //
+        // Cópia deste tema: --sidebar-width-collapsed do Aurora é bem mais compacta (4.25rem) que
+        // a do Venore Slime (5.5rem) — px-5 (usado lá) não cabe: 4.25rem − 2×px-5 − padding do
+        // item − ícone ficava negativo, cortando o ícone (bug reportado). px-3 deixa folga
+        // suficiente pro rail compacto (ver SidebarNavLink.tsx pro resto da conta).
+        "relative flex h-full w-full flex-col px-3 py-6 text-foreground shadow-float lg:w-(--sidebar-width-expanded) lg:shrink-0 lg:border-r lg:shadow-none ui-motion-emphasis",
         isAdmin ? "border-ring bg-(image:--sidebar-bg-admin)" : "border-border bg-(image:--sidebar-bg)",
         collapsed && "lg:w-(--sidebar-width-collapsed)",
       )}
