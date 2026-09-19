@@ -1,0 +1,21 @@
+{
+  "name": "@venore/theme-aurora",
+  "version": "0.1.0",
+  "description": "Aurora — tema do Venore Docks inspirado em developer tools dark-first (Linear/Vercel/Supabase): zinc quase-preto, acento índigo-violeta, tipografia tight.",
+  "private": true,
+  "type": "module",
+  "sideEffects": ["*.css"],
+  "exports": {
+    ".": "./index.ts",
+    "./manifest": "./manifest.ts",
+    "./color-palettes": "./color-palettes.ts",
+    "./theme.css": "./theme.css",
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "lucide-react": ">=0.400",
+    "next": ">=16",
+    "react": ">=19",
+    "react-dom": ">=19"
+  }
+}
