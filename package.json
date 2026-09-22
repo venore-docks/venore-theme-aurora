@@ -1,6 +1,6 @@
 {
   "name": "@venore/theme-aurora",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Aurora — tema do Venore Docks inspirado em developer tools dark-first (Linear/Vercel/Supabase): zinc quase-preto, acento índigo-violeta, tipografia tight.",
   "private": true,
   "type": "module",
