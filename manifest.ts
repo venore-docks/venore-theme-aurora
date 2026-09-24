@@ -3,7 +3,7 @@ import type { ThemeManifest } from "@venore/theme-sdk";
 export const auroraManifest: ThemeManifest = {
   key: "aurora",
   name: "Aurora",
-  version: "0.1.6",
+  version: "0.1.7",
   themeContractVersion: "7.0.0",
   // logoUrl real vem de contexts/settings (upload em /admin/settings/brand) — isto só declara os
   // valores padrão de exibição. Cor aproxima o índigo-violeta de --primary no modo escuro

@@ -82,12 +82,21 @@ export function SidebarLeftSlot({
           "atrás"/"abaixo" do header). Precisa vencer o header nos dois estados (expandida/
           colapsada — a sobreposição horizontal é a mesma nos dois, só desloca com a largura). */}
       <div className="absolute top-4 right-0 z-50 hidden translate-x-1/2 lg:block">
+        {/* border-ring (não border-border) o tempo todo, não só hover/active: o botão fica meio
+            sobre a sidebar, meio sobre o header (por design — ver comentário acima), e os dois
+            usam o MESMO token --card de fundo. Com border-border (quase idêntico a --card no dark
+            mode, ~0.09 de diferença de lightness) e só shadow-panel pra separar, a metade do botão
+            sobre o header ficava praticamente invisível — a sombra não cria contraste nenhum
+            contra um fundo da mesma cor (bug reportado: "a seta aparece cortada ao meio"; não era
+            um bug de z-index, o botão já pintava por cima, só não dava pra ver). border-ring é
+            bem mais claro/saturado que --card nos dois modos, então contorna o círculo inteiro
+            com contraste visível não importa o que esteja atrás.  */}
         <button
           type="button"
           onClick={handleToggleCollapsed}
           aria-expanded={!collapsed}
           aria-label={collapsed ? "Expandir barra lateral" : "Colapsar barra lateral"}
-          className="flex size-11 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-panel ui-motion-base outline-none hover:bg-muted hover:border-ring active:border-ring focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex size-11 items-center justify-center rounded-full border border-ring bg-card text-foreground shadow-panel ui-motion-base outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
         >
           {collapsed ? (
             <ChevronRight className="size-4" aria-hidden="true" />
