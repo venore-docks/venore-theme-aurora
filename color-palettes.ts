@@ -30,10 +30,12 @@ const GENERATED_PALETTES = generateHueRotationPalettes(
 // bastaria aqui porque o preset original tem primary e accent no MESMO matiz (~205–210°, só
 // luminosidade diferente) — generateHueRotationPalettes rotacionaria os dois hues igualmente e
 // perderia essa relação. Estrutura (background/radius/fonte) continua sendo a da Aurora — só a
-// cor de marca muda.
+// cor de marca muda. Id continua "fem" (estável, já pode estar salvo como paletteId ativo em
+// algum site) — só o nome exibido virou "Oceano" (pedido de sessão: o teal/petróleo deste preset
+// lê mais como "oceano" do que o preset girado original, renomeado pra "Espaço" logo abaixo).
 const FEM_PALETTE: ColorPalette = {
   id: "fem",
-  name: "FEM",
+  name: "Oceano",
   light: {
     primary: "oklch(0.52 0.099 210.2)",
     "primary-foreground": "oklch(0.973 0.01 219.6)",
@@ -50,4 +52,12 @@ const FEM_PALETTE: ColorPalette = {
   },
 };
 
-export const AURORA_COLOR_PALETTES: ColorPalette[] = [...GENERATED_PALETTES, FEM_PALETTE];
+// "Oceano" original (id "oceano", vem de THEME_HUE_PRESETS em @venore/theme-sdk/palettes —
+// compartilhado pelos outros temas, não dá pra renomear ali sem afetar todo mundo) renomeado só
+// aqui no Aurora pra "Espaço", já que "Oceano" passou a nomear o FEM_PALETTE acima.
+const RENAMED_PRESETS: Record<string, string> = { oceano: "Espaço" };
+const RENAMED_GENERATED_PALETTES = GENERATED_PALETTES.map((palette) =>
+  RENAMED_PRESETS[palette.id] ? { ...palette, name: RENAMED_PRESETS[palette.id] } : palette,
+);
+
+export const AURORA_COLOR_PALETTES: ColorPalette[] = [...RENAMED_GENERATED_PALETTES, FEM_PALETTE];
