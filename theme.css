@@ -143,6 +143,9 @@
   --header-avatar-fg: var(--foreground);
   --header-border-subtle: var(--border);
   --header-border-strong: var(--ring);
+
+  /* cor de marca já resolvida (paleta incluída) — consumida pelo rail, ver fim do arquivo. */
+  --aurora-brand: var(--primary);
 }
 
 [data-theme="aurora"].dark {
@@ -213,24 +216,32 @@
   --header-border-strong: var(--ring);
 }
 
-/* Rail escuro no modo claro. --sidebar-bg é escuro nos dois modos (identidade "rail sempre
-   escuro"), mas os tokens de texto/superfície do bloco base são do modo claro — sobre o rail o
-   contraste caía para ~2.5:1. Dentro do rail (data-aurora-rail, SidebarLeftSlot.tsx) o modo claro
-   reusa os valores do bloco .dark. O fundo do rail também é redeclarado aqui: um override de paleta
-   (html[data-theme="aurora"], resolve-active-color-palette.ts) pode clarear --sidebar-bg-* no modo
-   claro, e texto claro sobre rail claro voltaria a quebrar. No modo escuro nada muda — paleta e
-   tokens .dark seguem valendo normalmente. */
+/* Rail — sempre escuro, tingido pela cor de marca da paleta ativa. --aurora-brand captura o
+   --primary JÁ resolvido no <html> (o override de paleta, html[data-theme="aurora"] em
+   resolve-active-color-palette.ts, vence o bloco base e o var() resolve depois da cascata) —
+   dentro do rail --primary é redeclarado, então o rail precisa dessa cópia. O fundo mistura a marca
+   num quase-preto fixo: muda de cor com a paleta mas nunca clareia (ignora --sidebar-bg-* da
+   paleta, que no modo claro seria claro e quebraria o texto claro do rail). */
+[data-theme="aurora"] [data-aurora-rail] {
+  --sidebar-bg: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--aurora-brand) 24%, oklch(0.18 0.01 275)) 0%,
+    color-mix(in oklch, var(--aurora-brand) 14%, oklch(0.14 0.01 275)) 100%
+  );
+}
+
+/* Modo claro: o bloco base tem texto/superfícies claras, ilegíveis sobre o rail escuro (~2.5:1).
+   Dentro do rail, valores escuros; primary/ring clareiam a marca da paleta pra ler sobre o fundo. */
 [data-theme="aurora"]:not(.dark) [data-aurora-rail] {
-  --sidebar-bg: linear-gradient(180deg, oklch(0.24 0.03 275) 0%, oklch(0.19 0.03 275) 100%);
-  --foreground: oklch(0.92 0.004 275);
-  --card: oklch(0.21 0.006 275);
+  --foreground: oklch(0.94 0.004 275);
+  --card: color-mix(in oklch, var(--aurora-brand) 12%, oklch(0.22 0.01 275));
   --card-foreground: oklch(0.95 0.003 275);
-  --popover: oklch(0.19 0.006 275);
+  --popover: oklch(0.2 0.008 275);
   --popover-foreground: oklch(0.95 0.003 275);
-  --primary: oklch(0.72 0.19 275);
+  --primary: color-mix(in oklch, var(--aurora-brand) 62%, oklch(0.97 0 0));
   --primary-foreground: oklch(0.16 0.02 275);
-  --muted: oklch(0.3 0.03 275);
-  --muted-foreground: oklch(0.72 0.012 275);
-  --border: oklch(0.34 0.02 275);
-  --ring: oklch(0.68 0.18 275);
+  --muted: color-mix(in oklch, var(--aurora-brand) 20%, oklch(0.3 0.01 275));
+  --muted-foreground: oklch(0.76 0.012 275);
+  --border: color-mix(in oklch, var(--aurora-brand) 18%, oklch(0.34 0.01 275));
+  --ring: color-mix(in oklch, var(--aurora-brand) 62%, oklch(0.97 0 0));
 }

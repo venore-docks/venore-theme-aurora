@@ -4,6 +4,7 @@ import { UserMenu } from "./UserMenu";
 import { MobileNavToggleButton } from "./MobileNavToggleButton";
 import { PlatformBrand } from "./PlatformBrand";
 import { HeaderScrollSentinel } from "./HeaderScrollSentinel";
+import { SidebarCollapseButton } from "./SidebarCollapseButton";
 
 // Header compacto que se ELEVA ao rolar em vez de inverter de cor (refator premium: a inversão
 // pra bg-primary/text-primary-foreground era chamativa demais). Continua server component; o
@@ -33,7 +34,12 @@ export function HeaderSlot({
   notificationAlert,
   userNavItems,
   showLoginLink,
-}: HeaderSlotProps) {
+  sidebarCollapse,
+}: HeaderSlotProps & {
+  // Prop interna do Aurora (não do contrato): Shell repassa o colapso da sidebar pra o botão morar
+  // no header. null = sidebar desligada, sem botão.
+  sidebarCollapse?: { collapsed: boolean; onToggleCollapsed: () => Promise<void> } | null;
+}) {
   const navLinkClass =
     "rounded-lg px-3 py-1.5 text-xs font-medium uppercase tracking-caps text-muted-foreground ui-motion-base outline-none hover:bg-muted hover:text-foreground active:bg-muted focus-visible:ring-2 focus-visible:ring-ring";
 
@@ -49,9 +55,10 @@ export function HeaderSlot({
           (scrollShrinkEnabled
             ? "data-[scrolled=true]:h-16 data-[scrolled=true]:border-border data-[scrolled=true]:bg-card/85 data-[scrolled=true]:shadow-header data-[scrolled=true]:backdrop-blur-xl "
             : "") +
-          (brand.position === "center" ? "relative" : "")
+          (stickyEnabled ? "" : "relative")
         }
       >
+        {sidebarCollapse && <SidebarCollapseButton {...sidebarCollapse} />}
         <div className="flex items-center gap-2">
           <MobileNavToggleButton />
           <Link

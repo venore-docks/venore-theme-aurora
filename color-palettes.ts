@@ -1,27 +1,133 @@
 import type { ColorPalette } from "@venore/theme-sdk";
-import { generateHueRotationPalettes, THEME_HUE_PRESETS } from "@venore/theme-sdk/palettes";
 
-// Ponto de partida aproxima o índigo-violeta do bloco .dark de theme.css — presets alternativos
-// que o admin pode escolher em /admin/settings/brand, girando o matiz a partir daqui.
-const GENERATED_PALETTES = generateHueRotationPalettes(
-  {
-    light: {
-      primary: "oklch(0.53 0.21 275)",
-      primaryForeground: "oklch(0.98 0.01 275)",
-      accent: "oklch(0.93 0.035 275)",
-      accentForeground: "oklch(0.28 0.03 275)",
-      ring: "oklch(0.53 0.18 275)",
-    },
-    dark: {
-      primary: "oklch(0.72 0.19 275)",
-      primaryForeground: "oklch(0.16 0.02 275)",
-      accent: "oklch(0.32 0.05 275)",
-      accentForeground: "oklch(0.94 0.02 275)",
-      ring: "oklch(0.68 0.18 275)",
-    },
+// Catálogo escrito à mão: cada preset tem personalidade própria — não só o matiz, mas também
+// croma (vibração), luminosidade e a relação entre primary e accent (análoga, complementar ou
+// monocromática). Antes era generateHueRotationPalettes, que girava só o hue e deixava os presets
+// parecidos demais entre si. Ao aplicar, o core usa o primary como semente do resto da paleta e
+// mantém os tokens declarados aqui (setPresetColorPalette). O rail tinge pela cor primary
+// (theme.css, --aurora-brand). Ids estáveis (`oceano`, `ametista`, `ambar`, `rubro`, `fem`) — podem
+// estar salvos como paleta ativa em algum site.
+const ESPACO: ColorPalette = {
+  // Azul-elétrico profundo com accent ciano gelado — o mais "tech" do catálogo.
+  id: "oceano",
+  name: "Espaço",
+  light: {
+    primary: "oklch(0.5 0.22 262)",
+    "primary-foreground": "oklch(0.98 0.01 262)",
+    accent: "oklch(0.92 0.06 210)",
+    "accent-foreground": "oklch(0.3 0.08 220)",
+    ring: "oklch(0.55 0.2 262)",
   },
-  THEME_HUE_PRESETS,
-);
+  dark: {
+    primary: "oklch(0.7 0.18 255)",
+    "primary-foreground": "oklch(0.16 0.03 262)",
+    accent: "oklch(0.34 0.08 215)",
+    "accent-foreground": "oklch(0.93 0.05 205)",
+    ring: "oklch(0.72 0.16 230)",
+  },
+};
+
+const AMETISTA: ColorPalette = {
+  // Magenta-púrpura saturado com accent rosa — mais expressivo e quente que o índigo base.
+  id: "ametista",
+  name: "Ametista",
+  light: {
+    primary: "oklch(0.52 0.24 318)",
+    "primary-foreground": "oklch(0.98 0.01 318)",
+    accent: "oklch(0.92 0.06 350)",
+    "accent-foreground": "oklch(0.33 0.12 350)",
+    ring: "oklch(0.56 0.22 330)",
+  },
+  dark: {
+    primary: "oklch(0.72 0.2 320)",
+    "primary-foreground": "oklch(0.17 0.04 318)",
+    accent: "oklch(0.35 0.1 350)",
+    "accent-foreground": "oklch(0.94 0.04 350)",
+    ring: "oklch(0.74 0.18 340)",
+  },
+};
+
+const AMBAR: ColorPalette = {
+  // Laranja-âmbar quente com accent terracota — terroso, editorial. Primary claro no escuro com
+  // texto escuro por cima (como um botão de "warning" bem resolvido).
+  id: "ambar",
+  name: "Âmbar",
+  light: {
+    primary: "oklch(0.6 0.17 55)",
+    "primary-foreground": "oklch(0.18 0.03 55)",
+    accent: "oklch(0.92 0.05 35)",
+    "accent-foreground": "oklch(0.36 0.1 35)",
+    ring: "oklch(0.62 0.16 55)",
+  },
+  dark: {
+    primary: "oklch(0.78 0.16 70)",
+    "primary-foreground": "oklch(0.2 0.04 60)",
+    accent: "oklch(0.36 0.08 40)",
+    "accent-foreground": "oklch(0.94 0.04 50)",
+    ring: "oklch(0.78 0.15 65)",
+  },
+};
+
+const RUBRO: ColorPalette = {
+  // Carmim intenso com accent no complementar (verde-azulado) — o mais contrastante.
+  id: "rubro",
+  name: "Rubro",
+  light: {
+    primary: "oklch(0.52 0.21 22)",
+    "primary-foreground": "oklch(0.98 0.01 22)",
+    accent: "oklch(0.92 0.05 185)",
+    "accent-foreground": "oklch(0.32 0.07 190)",
+    ring: "oklch(0.55 0.2 22)",
+  },
+  dark: {
+    primary: "oklch(0.7 0.19 22)",
+    "primary-foreground": "oklch(0.17 0.03 22)",
+    accent: "oklch(0.34 0.06 190)",
+    "accent-foreground": "oklch(0.93 0.04 185)",
+    ring: "oklch(0.7 0.18 22)",
+  },
+};
+
+const FLORESTA: ColorPalette = {
+  // Verde-esmeralda com accent lima — orgânico, calmo.
+  id: "floresta",
+  name: "Floresta",
+  light: {
+    primary: "oklch(0.5 0.13 158)",
+    "primary-foreground": "oklch(0.98 0.01 158)",
+    accent: "oklch(0.93 0.07 125)",
+    "accent-foreground": "oklch(0.34 0.08 130)",
+    ring: "oklch(0.54 0.13 158)",
+  },
+  dark: {
+    primary: "oklch(0.74 0.15 158)",
+    "primary-foreground": "oklch(0.18 0.03 158)",
+    accent: "oklch(0.35 0.07 130)",
+    "accent-foreground": "oklch(0.94 0.06 125)",
+    ring: "oklch(0.75 0.14 150)",
+  },
+};
+
+const GRAFITE: ColorPalette = {
+  // Quase monocromático: cinza-aço de croma baixíssimo, primary e accent no mesmo matiz — sóbrio,
+  // corporativo.
+  id: "grafite",
+  name: "Grafite",
+  light: {
+    primary: "oklch(0.32 0.02 250)",
+    "primary-foreground": "oklch(0.98 0.005 250)",
+    accent: "oklch(0.93 0.01 250)",
+    "accent-foreground": "oklch(0.3 0.02 250)",
+    ring: "oklch(0.45 0.03 250)",
+  },
+  dark: {
+    primary: "oklch(0.88 0.015 250)",
+    "primary-foreground": "oklch(0.18 0.01 250)",
+    accent: "oklch(0.32 0.015 250)",
+    "accent-foreground": "oklch(0.94 0.01 250)",
+    ring: "oklch(0.75 0.02 250)",
+  },
+};
 
 // Paleta escrita à mão (não gerada por generateHueRotationPalettes) — os tons exatos de
 // primary/accent/ring do Portal do Colaborador (FEM) no tema legado "Carlin Harbour"
@@ -32,7 +138,7 @@ const GENERATED_PALETTES = generateHueRotationPalettes(
 // perderia essa relação. Estrutura (background/radius/fonte) continua sendo a da Aurora — só a
 // cor de marca muda. Id continua "fem" (estável, já pode estar salvo como paletteId ativo em
 // algum site) — só o nome exibido virou "Oceano" (pedido de sessão: o teal/petróleo deste preset
-// lê mais como "oceano" do que o preset girado original, renomeado pra "Espaço" logo abaixo).
+// lê mais como "oceano" do que o antigo preset azul, que virou "Espaço" acima).
 const FEM_PALETTE: ColorPalette = {
   id: "fem",
   name: "Oceano",
@@ -52,12 +158,4 @@ const FEM_PALETTE: ColorPalette = {
   },
 };
 
-// "Oceano" original (id "oceano", vem de THEME_HUE_PRESETS em @venore/theme-sdk/palettes —
-// compartilhado pelos outros temas, não dá pra renomear ali sem afetar todo mundo) renomeado só
-// aqui no Aurora pra "Espaço", já que "Oceano" passou a nomear o FEM_PALETTE acima.
-const RENAMED_PRESETS: Record<string, string> = { oceano: "Espaço" };
-const RENAMED_GENERATED_PALETTES = GENERATED_PALETTES.map((palette) =>
-  RENAMED_PRESETS[palette.id] ? { ...palette, name: RENAMED_PRESETS[palette.id] } : palette,
-);
-
-export const AURORA_COLOR_PALETTES: ColorPalette[] = [...RENAMED_GENERATED_PALETTES, FEM_PALETTE];
+export const AURORA_COLOR_PALETTES: ColorPalette[] = [ESPACO, AMETISTA, AMBAR, RUBRO, FLORESTA, GRAFITE, FEM_PALETTE];

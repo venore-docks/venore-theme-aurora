@@ -29,7 +29,14 @@ export function Shell({
     <div className="flex min-h-dvh flex-1">
       <SidebarLeftSlot {...sidebarLeft} />
       <div className="flex min-w-0 flex-1 flex-col">
-        <HeaderSlot {...header} />
+        <HeaderSlot
+          {...header}
+          sidebarCollapse={
+            sidebarLeft.enabled
+              ? { collapsed: sidebarLeft.collapsed, onToggleCollapsed: sidebarLeft.onToggleCollapsed }
+              : null
+          }
+        />
         <ContentSlot
           sidebarContextualEnabled={sidebarContextualEnabled}
           sidebarContextual={sidebarContextual}

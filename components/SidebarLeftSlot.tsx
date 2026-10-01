@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { ChevronLeft, ChevronRight, Globe2, ShieldCheck } from "lucide-react";
+import { Globe2, ShieldCheck } from "lucide-react";
 import type { SidebarLeftSlotProps } from "@venore/theme-sdk";
 import { cn } from "@venore/theme-sdk/ui";
 import { MobileNavDrawer } from "./MobileNavDrawer";
 import { SidebarNavLink } from "./SidebarNavLink";
 import { SIDEBAR_COLLAPSE_TOOLTIP_COLLAPSED_CLASSES } from "./sidebar-collapse-tooltip";
+import { useSidebarCollapsed } from "./sidebar-collapse-store";
 
 // Exclusivo de navegação (main-nav ou admin-nav, conforme navMode) — não é área de widgets. O
 // toggle main-nav/admin-nav mora aqui, não no Header (docs/venore-docks.md — "Shell única"),
@@ -38,21 +38,14 @@ export function SidebarLeftSlot({
   canToggleAdminNav,
   onToggleNavMode,
   collapsed: collapsedFromServer,
-  onToggleCollapsed,
 }: SidebarLeftSlotProps) {
-  const [collapsed, setCollapsed] = useState(collapsedFromServer);
-  const [, startTransition] = useTransition();
+  // O botão de colapso mora no HeaderSlot (SidebarCollapseButton.tsx); o estado é compartilhado
+  // pelo store. onToggleCollapsed é chamado de lá.
+  const collapsed = useSidebarCollapsed(collapsedFromServer);
 
   if (!enabled) return null;
 
   const isAdmin = navMode === "admin";
-
-  function handleToggleCollapsed() {
-    setCollapsed((value) => !value);
-    startTransition(() => {
-      onToggleCollapsed();
-    });
-  }
 
   return (
     <MobileNavDrawer
@@ -77,36 +70,6 @@ export function SidebarLeftSlot({
         collapsed && "lg:w-(--sidebar-width-collapsed)",
       )}
     >
-      {/* z-50 (não z-10): esse botão flutua pra fora da sidebar (translate-x-1/2) sobre a coluna
-          de conteúdo, onde o HeaderSlot mora — header é sticky com z-40 (HeaderSlot.tsx), e com
-          z-10 o header ficava por cima e cortava a seta ao meio (bug reportado: botão parecia
-          "atrás"/"abaixo" do header). Precisa vencer o header nos dois estados (expandida/
-          colapsada — a sobreposição horizontal é a mesma nos dois, só desloca com a largura). */}
-      <div className="absolute top-4 right-0 z-50 hidden translate-x-1/2 lg:block">
-        {/* border-ring (não border-border) o tempo todo, não só hover/active: o botão fica meio
-            sobre a sidebar, meio sobre o header (por design — ver comentário acima), e os dois
-            usam o MESMO token --card de fundo. Com border-border (quase idêntico a --card no dark
-            mode, ~0.09 de diferença de lightness) e só shadow-panel pra separar, a metade do botão
-            sobre o header ficava praticamente invisível — a sombra não cria contraste nenhum
-            contra um fundo da mesma cor (bug reportado: "a seta aparece cortada ao meio"; não era
-            um bug de z-index, o botão já pintava por cima, só não dava pra ver). border-ring é
-            bem mais claro/saturado que --card nos dois modos, então contorna o círculo inteiro
-            com contraste visível não importa o que esteja atrás.  */}
-        <button
-          type="button"
-          onClick={handleToggleCollapsed}
-          aria-expanded={!collapsed}
-          aria-label={collapsed ? "Expandir barra lateral" : "Colapsar barra lateral"}
-          className="flex size-11 items-center justify-center rounded-full border border-ring bg-card text-foreground shadow-panel ui-motion-base outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          {collapsed ? (
-            <ChevronRight className="size-4" aria-hidden="true" />
-          ) : (
-            <ChevronLeft className="size-4" aria-hidden="true" />
-          )}
-        </button>
-      </div>
-
       {canToggleAdminNav && (
         // pt-8: espaço reservado pro botão flutuante de colapso (top-4, size-11), que fica
         // sobreposto ao canto superior direito do frame — mesma folga em expandido/colapsado pra
