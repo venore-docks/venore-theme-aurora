@@ -144,8 +144,9 @@
   --header-border-subtle: var(--border);
   --header-border-strong: var(--ring);
 
-  /* cor de marca já resolvida (paleta incluída) — consumida pelo rail, ver fim do arquivo. */
+  /* cor de marca e borda já resolvidas (paleta incluída) — consumidas pelo rail, ver fim do arquivo. */
   --aurora-brand: var(--primary);
+  --aurora-page-border: var(--border);
 }
 
 [data-theme="aurora"].dark {
@@ -219,29 +220,41 @@
 /* Rail — sempre escuro, tingido pela cor de marca da paleta ativa. --aurora-brand captura o
    --primary JÁ resolvido no <html> (o override de paleta, html[data-theme="aurora"] em
    resolve-active-color-palette.ts, vence o bloco base e o var() resolve depois da cascata) —
-   dentro do rail --primary é redeclarado, então o rail precisa dessa cópia. O fundo mistura a marca
-   num quase-preto fixo: muda de cor com a paleta mas nunca clareia (ignora --sidebar-bg-* da
-   paleta, que no modo claro seria claro e quebraria o texto claro do rail). */
+   dentro do rail --primary é redeclarado, então o rail precisa dessa cópia.
+
+   Toda mistura usa uma base acromática com matiz `none`: em color-mix(in oklch, …) o matiz é
+   interpolado mesmo com croma ~0, então uma base com matiz 275 puxava qualquer marca pro violeta
+   (Floresta saía azul, Rubro saía magenta). Com `none`, o resultado fica com o matiz da marca.
+   O fundo ignora --sidebar-bg-* da paleta (no modo claro seriam claros e quebrariam o texto). */
 [data-theme="aurora"] [data-aurora-rail] {
   --sidebar-bg: linear-gradient(
     180deg,
-    color-mix(in oklch, var(--aurora-brand) 24%, oklch(0.18 0.01 275)) 0%,
-    color-mix(in oklch, var(--aurora-brand) 14%, oklch(0.14 0.01 275)) 100%
+    color-mix(in oklch, var(--aurora-brand) 24%, oklch(0.18 0 none)) 0%,
+    color-mix(in oklch, var(--aurora-brand) 14%, oklch(0.14 0 none)) 100%
   );
+  /* texto secundário um pouco mais claro que o da página: o rail tingido é mais claro que o fundo
+     do modo escuro, e 0.66 caía pra ~4.2:1 no topo do gradiente. */
+  --muted-foreground: oklch(0.76 0.01 275);
 }
 
 /* Modo claro: o bloco base tem texto/superfícies claras, ilegíveis sobre o rail escuro (~2.5:1).
-   Dentro do rail, valores escuros; primary/ring clareiam a marca da paleta pra ler sobre o fundo. */
+   Dentro do rail, valores escuros; primary/ring clareiam a marca da paleta pra ler sobre o fundo.
+
+   Borda: a mesma cor da borda da página (--aurora-page-border), só com opacidade baixa — no rail
+   escuro a borda clara a 100% virava uma linha quase branca. --color-border também é redeclarado
+   porque o reset global do core (`* { border-color: var(--color-border) }`, fora de @layer em
+   globals.css) vence todo utilitário border-* e resolve --color-border no :root; sem isto, as
+   bordas do rail continuariam com a cor da página. */
 [data-theme="aurora"]:not(.dark) [data-aurora-rail] {
   --foreground: oklch(0.94 0.004 275);
-  --card: color-mix(in oklch, var(--aurora-brand) 12%, oklch(0.22 0.01 275));
+  --card: color-mix(in oklch, var(--aurora-brand) 12%, oklch(0.22 0 none));
   --card-foreground: oklch(0.95 0.003 275);
-  --popover: oklch(0.2 0.008 275);
+  --popover: color-mix(in oklch, var(--aurora-brand) 10%, oklch(0.2 0 none));
   --popover-foreground: oklch(0.95 0.003 275);
-  --primary: color-mix(in oklch, var(--aurora-brand) 62%, oklch(0.97 0 0));
+  --primary: color-mix(in oklch, var(--aurora-brand) 55%, oklch(0.97 0 none));
   --primary-foreground: oklch(0.16 0.02 275);
-  --muted: color-mix(in oklch, var(--aurora-brand) 20%, oklch(0.3 0.01 275));
-  --muted-foreground: oklch(0.76 0.012 275);
-  --border: color-mix(in oklch, var(--aurora-brand) 18%, oklch(0.34 0.01 275));
-  --ring: color-mix(in oklch, var(--aurora-brand) 62%, oklch(0.97 0 0));
+  --muted: color-mix(in oklch, var(--aurora-brand) 20%, oklch(0.3 0 none));
+  --ring: color-mix(in oklch, var(--aurora-brand) 55%, oklch(0.97 0 none));
+  --border: color-mix(in oklch, var(--aurora-page-border) 18%, transparent);
+  --color-border: var(--border);
 }

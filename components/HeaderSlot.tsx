@@ -55,7 +55,10 @@ export function HeaderSlot({
           (scrollShrinkEnabled
             ? "data-[scrolled=true]:h-16 data-[scrolled=true]:border-border data-[scrolled=true]:bg-card/85 data-[scrolled=true]:shadow-header data-[scrolled=true]:backdrop-blur-xl "
             : "") +
-          (stickyEnabled ? "" : "relative")
+          (stickyEnabled ? "" : "relative ") +
+          // Metade do SidebarCollapseButton (size-11) entra no header pela esquerda — sem folga
+          // extra a marca encostava no botão (2px de distância com px-6).
+          (sidebarCollapse ? "lg:pl-12" : "")
         }
       >
         {sidebarCollapse && <SidebarCollapseButton {...sidebarCollapse} />}

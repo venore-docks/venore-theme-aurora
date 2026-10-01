@@ -168,7 +168,7 @@ function SidebarSurfaceSwitch({
       <span
         aria-hidden="true"
         className={cn(
-          "pointer-events-none absolute inset-y-1 z-0 w-[calc(50%-0.125rem)] rounded-lg border border-ring bg-card shadow-panel ui-motion-base",
+          "pointer-events-none absolute inset-y-1 z-0 w-[calc(50%-0.125rem)] rounded-lg border border-border bg-card shadow-panel ui-motion-base",
           isAdmin ? "left-[calc(50%+0.125rem)]" : "left-1",
         )}
       />
