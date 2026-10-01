@@ -27,7 +27,7 @@ export function Shell({
 }: ThemeShellProps) {
   return (
     <div className="flex min-h-dvh flex-1">
-      <SidebarLeftSlot {...sidebarLeft} />
+      <SidebarLeftSlot {...sidebarLeft} headerNavItems={header.headerNavItems} />
       <div className="flex min-w-0 flex-1 flex-col">
         <HeaderSlot
           {...header}

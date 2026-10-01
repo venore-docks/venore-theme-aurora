@@ -120,14 +120,15 @@ export function MobileNavDrawer({
           type="button"
           aria-label="Fechar navegação"
           onClick={closeMobileNav}
-          className="fixed inset-0 z-40 bg-popover/80 lg:hidden"
+          className="fixed inset-0 z-40 bg-(--aurora-scrim) backdrop-blur-[2px] lg:hidden"
         />
       )}
       <div
         ref={panelRef}
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-64 max-w-[85vw] ui-motion-emphasis",
-          "lg:static lg:z-auto lg:w-auto lg:max-w-none lg:shrink-0 lg:translate-x-0 lg:transition-none",
+          // lg: rail fixo na altura da tela (sticky) — o menu rola dentro do <nav>, não some ao rolar a página.
+          "lg:sticky lg:top-0 lg:h-dvh lg:z-auto lg:w-auto lg:max-w-none lg:shrink-0 lg:translate-x-0 lg:transition-none",
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >

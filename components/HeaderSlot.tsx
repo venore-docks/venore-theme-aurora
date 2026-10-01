@@ -77,7 +77,7 @@ export function HeaderSlot({
         </div>
 
         {headerNavItems.length > 0 && (
-          <nav className="flex flex-1 items-center justify-center gap-1">
+          <nav className="hidden flex-1 items-center justify-center gap-1 lg:flex">
             {headerNavItems.map((item) => (
               <a key={item.key} href={item.href} className={navLinkClass}>
                 {item.label}

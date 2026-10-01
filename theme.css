@@ -116,6 +116,10 @@
 
   --overlay-foreground: oklch(1 0 0);
 
+  /* fundo atrás do drawer mobile — escurece a página (combina com o rail escuro) em vez de um véu
+     claro. Token próprio do Aurora. */
+  --aurora-scrim: oklch(0.16 0.02 275 / 0.45);
+
   /* superfície "apresentação" — sempre a versão escura do tema, frozen (só bloco base). */
   --presentation-ground: oklch(0.14 0.006 275);
   --presentation-card: oklch(0.19 0.007 275);
@@ -203,6 +207,8 @@
   --chart-5: var(--destructive);
   --chart-6: oklch(0.64 0.17 235);
   --chart-7: oklch(0.66 0.18 350);
+
+  --aurora-scrim: oklch(0.05 0.01 275 / 0.6);
 
   --app-bg-start: oklch(0.15 0.006 275);
   --app-bg-mid: oklch(0.145 0.006 275);

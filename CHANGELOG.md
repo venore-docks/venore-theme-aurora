@@ -3,6 +3,16 @@
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). A versão segue
 `package.json#version` (e `manifest.ts`, que precisa ter o mesmo número).
 
+## [0.1.13] - 2026-10-01
+
+### Changed
+
+- Rail fixo na altura da tela no desktop: o menu não some ao rolar a página.
+- Menu do cabeçalho só aparece no header a partir do desktop; no mobile vai pro fim do drawer.
+- Fundo atrás do drawer mobile escurece a página (token `--aurora-scrim`) em vez do véu claro.
+- Ícones centralizados no rail recolhido; títulos de grupo do admin sem transparência
+  (contraste ≥ 4.5:1).
+
 ## [0.1.12] - 2026-10-01
 
 ### Fixed

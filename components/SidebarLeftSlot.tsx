@@ -1,7 +1,7 @@
 "use client";
 
 import { Globe2, ShieldCheck } from "lucide-react";
-import type { SidebarLeftSlotProps } from "@venore/theme-sdk";
+import type { NavItem, SidebarLeftSlotProps } from "@venore/theme-sdk";
 import { cn } from "@venore/theme-sdk/ui";
 import { MobileNavDrawer } from "./MobileNavDrawer";
 import { SidebarNavLink } from "./SidebarNavLink";
@@ -38,7 +38,12 @@ export function SidebarLeftSlot({
   canToggleAdminNav,
   onToggleNavMode,
   collapsed: collapsedFromServer,
-}: SidebarLeftSlotProps) {
+  headerNavItems = [],
+}: SidebarLeftSlotProps & {
+  // Prop interna do Aurora: o menu do cabeçalho some do header abaixo de lg (não cabe) e aparece
+  // aqui, no fim do drawer.
+  headerNavItems?: NavItem[];
+}) {
   // O botão de colapso mora no HeaderSlot (SidebarCollapseButton.tsx); o estado é compartilhado
   // pelo store. onToggleCollapsed é chamado de lá.
   const collapsed = useSidebarCollapsed(collapsedFromServer);
@@ -100,7 +105,7 @@ export function SidebarLeftSlot({
                 <div className="relative h-5">
                   <p
                     className={cn(
-                      "absolute inset-0 px-3 pb-1 text-[11px] font-semibold uppercase tracking-caps text-muted-foreground/70 ui-motion-emphasis",
+                      "absolute inset-0 px-3 pb-1 text-[11px] font-semibold uppercase tracking-caps text-muted-foreground ui-motion-emphasis",
                       collapsed && "lg:opacity-0",
                     )}
                   >
@@ -122,6 +127,20 @@ export function SidebarLeftSlot({
           <p className="px-3 text-sm text-muted-foreground/56">—</p>
         )}
         {!isAdmin && navItems.length === 0 && <p className="px-3 text-sm text-muted-foreground/56">—</p>}
+
+        {headerNavItems.length > 0 && (
+          <div className="mt-4 space-y-1 border-t border-border pt-4 lg:hidden">
+            {headerNavItems.map((item) => (
+              <a
+                key={item.key}
+                href={item.href}
+                className="flex rounded-lg px-2 py-2.5 text-xs font-medium uppercase tracking-caps text-muted-foreground ui-motion-base outline-none hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        )}
       </nav>
     </MobileNavDrawer>
   );

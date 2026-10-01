@@ -59,7 +59,7 @@ export function SidebarNavLink({ item, collapsed, isAdmin }: { item: MainNavItem
             // 4.25rem de largura, esse "gap fantasma" de 12px é o que sobrava faltando e cortava
             // o ícone (bug reportado).
             "group/sidebar-collapse-target relative flex w-full cursor-pointer items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm ui-motion-base outline-none focus-visible:ring-2 focus-visible:ring-ring",
-            collapsed && "lg:gap-0",
+            collapsed && "lg:justify-center lg:gap-0",
             isActiveAncestor ? "font-semibold text-primary" : "font-medium text-muted-foreground",
             "hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground",
           )}
@@ -101,7 +101,7 @@ export function SidebarNavLink({ item, collapsed, isAdmin }: { item: MainNavItem
     // Cópia deste tema: px-2 + lg:gap-0 quando colapsado — mesmo racional do botão de
     // agregador acima (ver comentário ali).
     "group/sidebar-collapse-target relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm ui-motion-base outline-none focus-visible:ring-2 focus-visible:ring-ring",
-    collapsed && "lg:gap-0",
+    collapsed && "lg:justify-center lg:gap-0",
     isActive
       ? "bg-primary/10 font-semibold text-primary"
       : "font-medium text-muted-foreground hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground",
