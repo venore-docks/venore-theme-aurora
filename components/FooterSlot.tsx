@@ -5,10 +5,8 @@ import { PlatformBrand } from "./PlatformBrand";
 
 // Marca num painel accent-soft + grid de sitemap real (Sitemap, componente reutilizável fora do
 // tema), mesma composição do PlatformFooter de referência (protótipo venore-docks,
-// platform-frame.tsx). brand.color aqui é o único lugar do app (fora da impressão de PDF do
-// plugin birthdays) que pinta algo com a cor de marca — um traço de acento sob a marca, cor de
-// negócio injetada via prop, não um token semântico shadcn (mesma exceção documentada em
-// build-birthday-pdf-html.ts). Server component puro, sem I/O — quem busca dado (getBrandConfig +
+// platform-frame.tsx). O traço de acento sob a marca usa o token --primary (bg-primary/40), não
+// brand.color — segue a paleta ativa do tema. Server component puro, sem I/O — quem busca dado (getBrandConfig +
 // getMenuByLocation("sitemap")) é platform/theme-rendering/resolve-theme-slot-props.ts.
 export function FooterSlot({ brand, sitemapItems, creditsEnabled, loginLinkHref }: FooterSlotProps) {
   return (

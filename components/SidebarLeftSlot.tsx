@@ -56,6 +56,7 @@ export function SidebarLeftSlot({
 
   return (
     <MobileNavDrawer
+      asideProps={{ "data-aurora-rail": "" }}
       asideClassName={cn(
         // px-3 (não px-5 como no Venore Slime) é fixo em qualquer breakpoint e em qualquer estado
         // de collapsed — o padding não pode depender de `collapsed` (bug de referência: padding

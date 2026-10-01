@@ -13,9 +13,9 @@ import { HeaderScrollSentinel } from "./HeaderScrollSentinel";
 // PlatformBrand, porque também roda fora do header (preview de admin/settings/brand).
 //
 // Estados:
-//   top      → bg-card, borda hairline, sem sombra; altura h-16 / lg:h-20.
+//   top      → bg-card, borda hairline, sem sombra; altura h-20 / lg:h-24.
 //   scrolled → mesma cor de fundo translúcida + backdrop-blur (efeito "frosted"), borda mais
-//              definida, shadow-header, altura h-14. Sem troca de paleta.
+//              definida, shadow-header, altura h-16. Sem troca de paleta.
 //
 // T4: stickyEnabled/scrollShrinkEnabled vêm de contexts/settings (platform/header-behavior).
 // stickyEnabled também liga o backdrop-blur no estado top (um header fixo sobre conteúdo que

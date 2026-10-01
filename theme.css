@@ -212,3 +212,25 @@
   --header-border-subtle: var(--border);
   --header-border-strong: var(--ring);
 }
+
+/* Rail escuro no modo claro. --sidebar-bg é escuro nos dois modos (identidade "rail sempre
+   escuro"), mas os tokens de texto/superfície do bloco base são do modo claro — sobre o rail o
+   contraste caía para ~2.5:1. Dentro do rail (data-aurora-rail, SidebarLeftSlot.tsx) o modo claro
+   reusa os valores do bloco .dark. O fundo do rail também é redeclarado aqui: um override de paleta
+   (html[data-theme="aurora"], resolve-active-color-palette.ts) pode clarear --sidebar-bg-* no modo
+   claro, e texto claro sobre rail claro voltaria a quebrar. No modo escuro nada muda — paleta e
+   tokens .dark seguem valendo normalmente. */
+[data-theme="aurora"]:not(.dark) [data-aurora-rail] {
+  --sidebar-bg: linear-gradient(180deg, oklch(0.24 0.03 275) 0%, oklch(0.19 0.03 275) 100%);
+  --foreground: oklch(0.92 0.004 275);
+  --card: oklch(0.21 0.006 275);
+  --card-foreground: oklch(0.95 0.003 275);
+  --popover: oklch(0.19 0.006 275);
+  --popover-foreground: oklch(0.95 0.003 275);
+  --primary: oklch(0.72 0.19 275);
+  --primary-foreground: oklch(0.16 0.02 275);
+  --muted: oklch(0.3 0.03 275);
+  --muted-foreground: oklch(0.72 0.012 275);
+  --border: oklch(0.34 0.02 275);
+  --ring: oklch(0.68 0.18 275);
+}

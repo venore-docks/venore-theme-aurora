@@ -17,7 +17,16 @@ const OFF_CANVAS_MEDIA_QUERY = "(min-width: 1024px)";
 // só a casca que decide overlay/posição/Escape é client. Abaixo de lg vira off-canvas fechado
 // por padrão; a partir de lg os estilos de drawer são neutralizados e ela volta a ser a coluna
 // fixa (classes lg: do próprio SidebarLeftSlot cuidam disso).
-export function MobileNavDrawer({ children, asideClassName }: { children: ReactNode; asideClassName: string }) {
+export function MobileNavDrawer({
+  children,
+  asideClassName,
+  asideProps,
+}: {
+  children: ReactNode;
+  asideClassName: string;
+  // data-* extras no <aside> (ex: data-aurora-rail, que escopa os tokens do rail em theme.css).
+  asideProps?: Record<`data-${string}`, string>;
+}) {
   const isOpen = useMobileNavOpen();
   const panelRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -122,7 +131,7 @@ export function MobileNavDrawer({ children, asideClassName }: { children: ReactN
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        <aside className={cn(asideClassName, "overscroll-contain")}>{children}</aside>
+        <aside {...asideProps} className={cn(asideClassName, "overscroll-contain")}>{children}</aside>
       </div>
     </>
   );
