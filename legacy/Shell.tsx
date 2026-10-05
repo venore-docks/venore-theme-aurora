@@ -1,3 +1,4 @@
+// Shell 7.x da 0.1.13, congelado: só servido a cores 7.x via index.ts (sai na 0.3.0).
 import type { ThemeShellProps } from "@venore/theme-sdk";
 import { HeaderSlot } from "./HeaderSlot";
 import { FooterSlot } from "./FooterSlot";

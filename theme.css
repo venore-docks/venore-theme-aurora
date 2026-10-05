@@ -5,7 +5,13 @@
    modo de referência da identidade.
 
    [data-theme="aurora"] no <html> ativa o bloco base; .dark também vive no <html> (nunca
-   aninhado), por isso a variante escura é o seletor composto abaixo. */
+   aninhado), por isso a variante escura é o seletor composto abaixo.
+
+   Contrato 8.0.0 (docs/themes/theme-system-v8.md no core): a rail é a região "rail" do kit
+   (<aside data-region="rail">). Dentro dela o core remapeia o vocabulário shadcn para os tokens
+   tier-3 --region-rail-* (src/app/styles/region-tokens.css) — por isso a Aurora só DECLARA esses
+   tokens aqui no <html>, onde var(--primary) já é o da paleta ativa; não há mais escopo próprio
+   ([data-aurora-rail] sobrevive só no bloco de compatibilidade 7.x, no fim do arquivo). */
 
 [data-theme="aurora"] {
   /* raio — contido, sem curvas macias; developer tools usam cantos discretos. */
@@ -82,19 +88,61 @@
   --shadow-float: 0 2px 6px -2px var(--shadow-color-strong-soft), 0 14px 30px -14px var(--shadow-color-strong-soft);
   --shadow-header: 0 1px 0 0 var(--border);
 
-  /* sidebar — compacta, largura de developer tool. --sidebar-bg usa a MESMA cor de
-     --sidebar-bg-admin (pedido desta sessão: o tom do admin-nav ficou bom demais pra deixar
-     só ali) — main-nav e admin-nav têm o painel idêntico agora; a distinção de modo vira
-     borda (cor+espessura, ver SidebarLeftSlot.tsx), não mais troca de fundo. */
+  /* rail — compacta, largura de developer tool. */
   --sidebar-width-expanded: 15rem;
   --sidebar-width-collapsed: 4.25rem;
 
-  --sidebar-bg-start: oklch(0.24 0.03 275);
-  --sidebar-bg-end: oklch(0.19 0.03 275);
-  --sidebar-bg: linear-gradient(180deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 100%);
-  --sidebar-bg-admin-start: oklch(0.24 0.03 275);
-  --sidebar-bg-admin-end: oklch(0.19 0.03 275);
-  --sidebar-bg-admin: linear-gradient(180deg, var(--sidebar-bg-admin-start) 0%, var(--sidebar-bg-admin-end) 100%);
+  /* Rail sempre escura, tingida pela cor de marca da paleta ativa: --primary (já resolvido no
+     <html>, com o override da paleta) misturado a um quase-preto fixo — muda de cor com a paleta
+     mas nunca clareia. Toda mistura usa base acromática com matiz `none`: em color-mix(in oklch, …)
+     o matiz é interpolado mesmo com croma ~0, e uma base com matiz 275 puxava qualquer marca pro
+     violeta (Floresta saía azul, Rubro saía magenta). O fundo ignora --sidebar-bg-* vindos da
+     paleta (uma paleta personalizada antiga podia trazê-los claros, ilegíveis com o texto da rail). */
+  --aurora-rail-start: color-mix(in oklch, var(--primary) 24%, oklch(0.18 0 none));
+  --aurora-rail-end: color-mix(in oklch, var(--primary) 14%, oklch(0.14 0 none));
+  --aurora-rail-popover: color-mix(in oklch, var(--primary) 10%, oklch(0.2 0 none));
+
+  /* main-nav e admin-nav têm o painel idêntico; a distinção de modo é a borda (cor do --ring e,
+     a partir de lg, 2px no admin — ver "Rail" abaixo). */
+  --sidebar-bg-start: var(--aurora-rail-start);
+  --sidebar-bg-end: var(--aurora-rail-end);
+  --sidebar-bg: linear-gradient(180deg, var(--aurora-rail-start) 0%, var(--aurora-rail-end) 100%);
+  --sidebar-bg-admin-start: var(--aurora-rail-start);
+  --sidebar-bg-admin-end: var(--aurora-rail-end);
+  --sidebar-bg-admin: linear-gradient(180deg, var(--aurora-rail-start) 0%, var(--aurora-rail-end) 100%);
+
+  /* Tokens da região rail (tier 3). No modo claro o vocabulário da página é claro e ficaria
+     ilegível sobre a rail escura (~2.5:1): dentro dela, texto claro e superfícies escuras tingidas;
+     primary/ring clareiam a marca pra ler sobre o fundo. Borda: a cor da borda da página com
+     opacidade baixa (18%) — a 100% virava uma linha quase branca. O texto secundário (0.76) é um
+     pouco mais claro que o da página nos dois modos: a rail tingida é mais clara que o fundo do
+     modo escuro, e 0.66 caía pra ~4.2:1 no topo do gradiente. */
+  --region-rail-background: var(--aurora-rail-start);
+  --region-rail-foreground: oklch(0.94 0.004 275);
+  --region-rail-muted: color-mix(in oklch, var(--primary) 20%, oklch(0.3 0 none));
+  --region-rail-muted-foreground: oklch(0.76 0.01 275);
+  --region-rail-card: color-mix(in oklch, var(--primary) 12%, oklch(0.22 0 none));
+  --region-rail-card-foreground: oklch(0.95 0.003 275);
+  --region-rail-primary: color-mix(in oklch, var(--primary) 55%, oklch(0.97 0 none));
+  --region-rail-primary-foreground: oklch(0.16 0.02 275);
+  --region-rail-border: color-mix(in oklch, var(--border) 18%, transparent);
+  --region-rail-ring: color-mix(in oklch, var(--primary) 55%, oklch(0.97 0 none));
+
+  /* Estilo de seção "midnight" (page builder, manifest.pageBuilder.sectionStyles; primitivos
+     --aurora-*, já que --section-<estilo>-* só é tier-3 conhecido pros estilos canônicos): a superfície da
+     rail como faixa de conteúdo, escura nos dois modos. */
+  --aurora-midnight-background: color-mix(in oklch, var(--primary) 24%, oklch(0.18 0 none));
+  --aurora-midnight-foreground: oklch(0.94 0.004 275);
+  --aurora-midnight-muted: color-mix(in oklch, var(--primary) 20%, oklch(0.3 0 none));
+  --aurora-midnight-muted-foreground: oklch(0.76 0.01 275);
+  --aurora-midnight-card: color-mix(in oklch, var(--primary) 12%, oklch(0.22 0 none));
+  --aurora-midnight-card-foreground: oklch(0.95 0.003 275);
+  --aurora-midnight-primary: color-mix(in oklch, var(--primary) 55%, oklch(0.97 0 none));
+  --aurora-midnight-primary-foreground: oklch(0.16 0.02 275);
+  --aurora-midnight-accent: color-mix(in oklch, var(--primary) 30%, oklch(0.32 0 none));
+  --aurora-midnight-accent-foreground: oklch(0.95 0.003 275);
+  --aurora-midnight-border: oklch(0.94 0.004 275 / 0.14);
+  --aurora-midnight-ring: color-mix(in oklch, var(--primary) 55%, oklch(0.97 0 none));
 
   --warning: oklch(0.62 0.16 70);
   --warning-foreground: oklch(0.98 0.01 70);
@@ -148,9 +196,6 @@
   --header-border-subtle: var(--border);
   --header-border-strong: var(--ring);
 
-  /* cor de marca e borda já resolvidas (paleta incluída) — consumidas pelo rail, ver fim do arquivo. */
-  --aurora-brand: var(--primary);
-  --aurora-page-border: var(--border);
 }
 
 [data-theme="aurora"].dark {
@@ -183,12 +228,16 @@
   --shadow-float: 0 2px 6px -2px var(--shadow-color-strong-soft), 0 16px 34px -16px var(--shadow-color-strong-soft);
   --shadow-header: 0 1px 0 0 var(--border);
 
-  --sidebar-bg-start: oklch(0.24 0.05 275);
-  --sidebar-bg-end: oklch(0.19 0.05 275);
-  --sidebar-bg: linear-gradient(180deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 100%);
-  --sidebar-bg-admin-start: oklch(0.24 0.05 275);
-  --sidebar-bg-admin-end: oklch(0.19 0.05 275);
-  --sidebar-bg-admin: linear-gradient(180deg, var(--sidebar-bg-admin-start) 0%, var(--sidebar-bg-admin-end) 100%);
+  /* Rail no escuro: fundo e texto secundário continuam os do bloco base (sempre escura); o resto
+     volta ao vocabulário escuro da página, que já lê sobre ela. */
+  --region-rail-foreground: var(--foreground);
+  --region-rail-muted: var(--muted);
+  --region-rail-card: var(--card);
+  --region-rail-card-foreground: var(--card-foreground);
+  --region-rail-primary: var(--primary);
+  --region-rail-primary-foreground: var(--primary-foreground);
+  --region-rail-border: var(--border);
+  --region-rail-ring: var(--ring);
 
   --warning: oklch(0.75 0.15 70);
   --warning-foreground: oklch(0.16 0.02 70);
@@ -223,44 +272,108 @@
   --header-border-strong: var(--ring);
 }
 
-/* Rail — sempre escuro, tingido pela cor de marca da paleta ativa. --aurora-brand captura o
-   --primary JÁ resolvido no <html> (o override de paleta, html[data-theme="aurora"] em
-   resolve-active-color-palette.ts, vence o bloco base e o var() resolve depois da cascata) —
-   dentro do rail --primary é redeclarado, então o rail precisa dessa cópia.
+/* Rail (região do kit). Estrutura e cor vêm do kit + tokens acima; aqui só o que é forma:
 
-   Toda mistura usa uma base acromática com matiz `none`: em color-mix(in oklch, …) o matiz é
-   interpolado mesmo com croma ~0, então uma base com matiz 275 puxava qualquer marca pro violeta
-   (Floresta saía azul, Rubro saía magenta). Com `none`, o resultado fica com o matiz da marca.
-   O fundo ignora --sidebar-bg-* da paleta (no modo claro seriam claros e quebrariam o texto). */
-[data-theme="aurora"] [data-aurora-rail] {
-  --sidebar-bg: linear-gradient(
-    180deg,
-    color-mix(in oklch, var(--aurora-brand) 24%, oklch(0.18 0 none)) 0%,
-    color-mix(in oklch, var(--aurora-brand) 14%, oklch(0.14 0 none)) 100%
-  );
-  /* texto secundário um pouco mais claro que o da página: o rail tingido é mais claro que o fundo
-     do modo escuro, e 0.66 caía pra ~4.2:1 no topo do gradiente. */
-  --muted-foreground: oklch(0.76 0.01 275);
+   - padding lateral de 0.75rem (o kit usa 1.25rem): com a largura recolhida compacta da Aurora
+     (4.25rem = 68px), 68 − 2×12 = 44px — exatamente o alvo de 44px do alternador Site/Admin, e o
+     ícone de 20px do item (padding 12px de cada lado) fica centrado sem regra própria pro estado
+     recolhido;
+   - admin-nav com borda de 2px na cor do --ring a partir de lg (main-nav: hairline);
+   - popover (tooltip do rótulo na rail recolhida) escuro no modo claro — popover não é um papel
+     de região, então é redeclarado aqui. */
+[data-theme="aurora"] [data-region="rail"] {
+  padding-inline: 0.75rem;
 }
 
-/* Modo claro: o bloco base tem texto/superfícies claras, ilegíveis sobre o rail escuro (~2.5:1).
-   Dentro do rail, valores escuros; primary/ring clareiam a marca da paleta pra ler sobre o fundo.
+@media (min-width: 64rem) {
+  [data-theme="aurora"] [data-region="rail"]:has(> nav[data-nav-mode="admin"]) {
+    border-inline-end-width: 2px;
+  }
+}
 
-   Borda: a mesma cor da borda da página (--aurora-page-border), só com opacidade baixa — no rail
-   escuro a borda clara a 100% virava uma linha quase branca. --color-border também é redeclarado
-   porque o reset global do core (`* { border-color: var(--color-border) }`, fora de @layer em
-   globals.css) vence todo utilitário border-* e resolve --color-border no :root; sem isto, as
-   bordas do rail continuariam com a cor da página. */
-[data-theme="aurora"]:not(.dark) [data-aurora-rail] {
-  --foreground: oklch(0.94 0.004 275);
-  --card: color-mix(in oklch, var(--aurora-brand) 12%, oklch(0.22 0 none));
-  --card-foreground: oklch(0.95 0.003 275);
-  --popover: color-mix(in oklch, var(--aurora-brand) 10%, oklch(0.2 0 none));
+[data-theme="aurora"]:not(.dark):not([data-opt-rail-tone="follow"]) :is([data-region="rail"], [data-aurora-rail]) {
+  --popover: var(--aurora-rail-popover);
   --popover-foreground: oklch(0.95 0.003 275);
-  --primary: color-mix(in oklch, var(--aurora-brand) 55%, oklch(0.97 0 none));
-  --primary-foreground: oklch(0.16 0.02 275);
-  --muted: color-mix(in oklch, var(--aurora-brand) 20%, oklch(0.3 0 none));
-  --ring: color-mix(in oklch, var(--aurora-brand) 55%, oklch(0.97 0 none));
-  --border: color-mix(in oklch, var(--aurora-page-border) 18%, transparent);
+}
+
+/* Fundo atrás do drawer mobile: escurece a página (combina com a rail escura) em vez do véu claro
+   do kit. `data-scrim` é o gancho do kit (só existe com o drawer aberto). */
+[data-theme="aurora"] [data-scrim] {
+  background-color: var(--aurora-scrim);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+/* Opção "rail-tone" = "follow": no modo claro a rail segue a página (clara, levemente tingida pela
+   marca). Especificidade (0,3,0) vence o override de paleta (html[data-theme], 0,1,1), que traz
+   tokens de rail escura quando a paleta é gerada por cor de marca. */
+[data-theme="aurora"][data-opt-rail-tone="follow"]:not(.dark) {
+  --aurora-rail-start: color-mix(in oklch, var(--primary) 5%, var(--card));
+  --aurora-rail-end: color-mix(in oklch, var(--primary) 3%, var(--background));
+  --region-rail-background: var(--aurora-rail-start);
+  --region-rail-foreground: var(--foreground);
+  --region-rail-muted: var(--muted);
+  --region-rail-muted-foreground: var(--muted-foreground);
+  --region-rail-card: var(--card);
+  --region-rail-card-foreground: var(--card-foreground);
+  --region-rail-primary: var(--primary);
+  --region-rail-primary-foreground: var(--primary-foreground);
+  --region-rail-border: var(--border);
+  --region-rail-ring: var(--ring);
+}
+
+/* Opção "density" = "compact": controles e painéis mais justos (dashboard denso). */
+[data-theme="aurora"][data-opt-density="compact"] {
+  --ui-control-height-xs: 1.5rem;
+  --ui-control-height-sm: 2rem;
+  --ui-control-height-md: 2.25rem;
+  --ui-control-height-lg: 2.5rem;
+  --ui-control-padding-x: 0.75rem;
+  --ui-button-gap: 0.375rem;
+  --ui-panel-padding-x: 1rem;
+  --ui-panel-padding-y: 1rem;
+}
+
+/* Estilo de seção "midnight": o core remapeia só os estilos canônicos (region-tokens.css); um
+   estilo do tema remapeia o próprio vocabulário. */
+[data-theme="aurora"] [data-section-style="midnight"] {
+  --background: var(--aurora-midnight-background);
+  --foreground: var(--aurora-midnight-foreground);
+  --muted: var(--aurora-midnight-muted);
+  --muted-foreground: var(--aurora-midnight-muted-foreground);
+  --card: var(--aurora-midnight-card);
+  --card-foreground: var(--aurora-midnight-card-foreground);
+  --primary: var(--aurora-midnight-primary);
+  --primary-foreground: var(--aurora-midnight-primary-foreground);
+  --accent: var(--aurora-midnight-accent);
+  --accent-foreground: var(--aurora-midnight-accent-foreground);
+  --border: var(--aurora-midnight-border);
+  --ring: var(--aurora-midnight-ring);
+}
+
+/* Variante "glow" do card (manifest.pageBuilder.blockVariants): borda e brilho na cor da marca. */
+[data-theme="aurora"] [data-block="core.content.card"][data-block-variant="glow"] {
+  border-color: color-mix(in oklch, var(--primary) 38%, var(--border));
+  background-image: linear-gradient(180deg, color-mix(in oklch, var(--primary) 7%, transparent) 0%, transparent 55%);
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--primary) 14%, transparent),
+    0 18px 40px -24px color-mix(in oklch, var(--primary) 55%, transparent);
+}
+
+/* Compatibilidade 7.x (só a 0.2.x; sai na 0.3.0): o Shell da 0.1.13 (legacy/, servido a cores 7.x
+   pelo index.ts) marca a rail com [data-aurora-rail] e não tem o remapeamento de região do core
+   8.x — o remapeamento é feito aqui, com os mesmos tokens. --color-border: o reset de borda do
+   core 7.x fica fora de @layer e resolve --color-border no :root. Inerte num core 8.x. */
+[data-theme="aurora"] [data-aurora-rail] {
+  --background: var(--region-rail-background);
+  --foreground: var(--region-rail-foreground);
+  --muted: var(--region-rail-muted);
+  --muted-foreground: var(--region-rail-muted-foreground);
+  --card: var(--region-rail-card);
+  --card-foreground: var(--region-rail-card-foreground);
+  --primary: var(--region-rail-primary);
+  --primary-foreground: var(--region-rail-primary-foreground);
+  --border: var(--region-rail-border);
+  --ring: var(--region-rail-ring);
   --color-border: var(--border);
 }

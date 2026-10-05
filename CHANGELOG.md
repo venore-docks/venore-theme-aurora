@@ -3,6 +3,29 @@
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). A versão segue
 `package.json#version` (e `manifest.ts`, que precisa ter o mesmo número).
 
+## [0.2.0] - 2026-10-05
+
+### Changed
+
+- Migrado para o contrato de tema 8.0.0 do Venore Docks (`theme.ts` com `defineTheme`, exportado em
+  `./theme`; `venoreTheme` no `package.json`). Layout `rail` do kit, colapso no header e menu do
+  header a partir de `lg` declarados no manifesto.
+- Componentes próprios substituídos pelo kit do core: nenhuma região forkada. A identidade (rail
+  escura tingida pela paleta nos dois modos, borda sutil a 18% no claro, larguras 15rem/4.25rem,
+  scrim escuro, tipografia) vive só em tokens: `[data-aurora-rail]` virou `--region-rail-*`.
+- JS client do tema: 4,7 KB gz (9 módulos) → 0.
+
+### Added
+
+- Opções: `rail-tone` (sempre escura / segue o modo) e `density` (confortável / compacta).
+- Estilo de seção `midnight` e variante `glow` do bloco card (só CSS); escolhas de fonte.
+- Regra de paleta `regions.rail.tone = "dark"` (paleta gerada por cor de marca mantém a rail escura).
+
+### Compatibility
+
+- Cores 7.x continuam funcionando nesta versão: `index.ts` exporta o `Shell` da 0.1.13 (congelado
+  em `legacy/`) e `./manifest` aponta para um manifesto com contrato 7.0.0. Sai na 0.3.0.
+
 ## [0.1.13] - 2026-10-01
 
 ### Changed
