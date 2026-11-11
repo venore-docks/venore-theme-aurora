@@ -8,7 +8,7 @@ export const AURORA_MANIFEST_BASE: Omit<ThemeManifest, "themeContractVersion"> =
   key: "aurora",
   name: "Aurora",
   // Mesmo número de package.json#version (o /admin/themes compara com as tags do repositório).
-  version: "0.2.0",
+  version: "0.2.1",
   // logoUrl real vem de contexts/settings (upload em /admin/settings/brand) — isto só declara os
   // valores padrão de exibição. Cor aproxima o índigo-violeta de --primary no modo escuro
   // (referência visual do tema).

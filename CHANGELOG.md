@@ -3,6 +3,14 @@
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). A versão segue
 `package.json#version` (e `manifest.ts`, que precisa ter o mesmo número).
 
+## [0.2.1] - 2026-11-11
+
+### Added
+
+- Região `footer` própria: "Mapa do site" em grupos. Grupos do menu `sitemap` com descrição viram cartões de tarefas (ícone, rótulo, descrição de uma linha, selos de link externo e de página com login); grupos sem descrição (ex.: Rede FEM) viram chips. Sem grupos, ou na área admin, cai no rodapé do kit.
+- `sitemap-meta.ts`: ícone/descrição/restrição por rótulo normalizado (pt-BR, Portal do Colaborador). Item sem entrada renderiza só o rótulo.
+- `messages.ts`: textos `aurora.sitemap.*`.
+
 ## [0.2.0] - 2026-10-05
 
 ### Changed
