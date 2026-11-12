@@ -128,7 +128,7 @@ export const AuroraFooter: RegionOverride<FooterRegionProps> = ({ Default, ...pr
 
   return (
     <footer data-region="footer" className="mt-auto border-t border-border text-muted-foreground">
-      <nav aria-label={t(strings, "aurora.sitemap.label")} className="mx-auto w-full max-w-7xl space-y-5 px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <nav aria-label={t(strings, "aurora.sitemap.label")} className="mx-auto w-full max-w-6xl space-y-5 px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         {slots.outletTop}
         <div className="max-w-prose space-y-2">
           <p className="text-base font-semibold text-foreground">{brand.name}</p>
@@ -147,7 +147,7 @@ export const AuroraFooter: RegionOverride<FooterRegionProps> = ({ Default, ...pr
         ))}
       </nav>
       <div className="border-t border-border">
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 px-4 py-4 text-xs sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-4 text-xs sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>
             © {year} {brand.name}. {t(strings, "aurora.sitemap.rights")}
           </p>

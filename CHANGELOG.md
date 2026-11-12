@@ -3,6 +3,12 @@
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). A versão segue
 `package.json#version` (e `manifest.ts`, que precisa ter o mesmo número).
 
+## [0.2.2] - 2026-11-12
+
+### Changed
+
+- Footer: `max-w-6xl` (alinhado ao conteúdo e aos breadcrumbs, antes `7xl`) e padding vertical da faixa do sitemap reduzido (`py-8 lg:py-10`, antes `py-10 lg:py-14`).
+
 ## [0.2.1] - 2026-11-11
 
 ### Added
