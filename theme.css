@@ -59,6 +59,11 @@
   --ui-panel-padding-x: 1.25rem;
   --ui-panel-padding-y: 1.25rem;
 
+  /* largura da coluna de conteúdo (ContentFrame/breadcrumbs do kit) e do footer. Mais larga que o
+     6xl do kit: em monitor 1920 a rail já tira ~250px e a margem sobrava. */
+  --page-width-contained: 90rem;
+  --page-width-wide: 100rem;
+
   /* base shadcn — zinc frio levemente violeta, cards em branco puro pra separar do fundo. */
   --background: oklch(0.985 0.002 275);
   --foreground: oklch(0.19 0.01 275);

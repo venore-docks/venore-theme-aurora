@@ -3,6 +3,12 @@
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). A versão segue
 `package.json#version` (e `manifest.ts`, que precisa ter o mesmo número).
 
+## [0.2.3] - 2026-11-12
+
+### Changed
+
+- Coluna de conteúdo mais larga: `--page-width-contained: 90rem` e `--page-width-wide: 100rem` no `theme.css` (o kit usava 6xl; em monitor 1920 sobravam ~270px de margem de cada lado). O footer usa o mesmo token. Exige core >= 0.7.8.
+
 ## [0.2.2] - 2026-11-12
 
 ### Changed
