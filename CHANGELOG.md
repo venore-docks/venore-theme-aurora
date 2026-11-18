@@ -3,6 +3,14 @@
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). A versão segue
 `package.json#version` (e `manifest.ts`, que precisa ter o mesmo número).
 
+## [0.2.4] - 2026-11-18
+
+### Changed
+
+- Contraste do modo claro: `--background` 0.965 (e `--app-bg-*` 0.972→0.958), `--muted` 0.94, `--muted-foreground` 0.45, `--border`/`--input` 0.86. Cartão sobre o fundo passa de 1,04:1 a 1,11:1, borda sobre o cartão de 1,35:1 a 1,53:1.
+- `--warning` (claro) 0.52 0.15 65: `text-warning` passa de 3,75:1 (abaixo do AA) a 5,7:1 sobre o cartão.
+- Modo escuro: `--destructive` 0.64 com `--destructive-foreground` escuro. `text-destructive` passa de 4,07:1 a 4,8:1 e o texto do botão vermelho de 3,98:1 a 5,3:1.
+
 ## [0.2.3] - 2026-11-12
 
 ### Changed

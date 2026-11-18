@@ -64,8 +64,10 @@
   --page-width-contained: 90rem;
   --page-width-wide: 100rem;
 
-  /* base shadcn — zinc frio levemente violeta, cards em branco puro pra separar do fundo. */
-  --background: oklch(0.985 0.002 275);
+  /* base shadcn — zinc frio levemente violeta, cards em branco puro pra separar do fundo.
+     Contraste (0.2.4): fundo × cartão 1,11:1 (era 1,04, os cartões sumiam), borda × cartão 1,53:1
+     (era 1,35), texto secundário 7,4:1. */
+  --background: oklch(0.965 0.003 275);
   --foreground: oklch(0.19 0.01 275);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.19 0.01 275);
@@ -75,14 +77,14 @@
   --primary-foreground: oklch(0.98 0.01 275);
   --secondary: oklch(0.96 0.004 275);
   --secondary-foreground: oklch(0.24 0.01 275);
-  --muted: oklch(0.96 0.004 275);
-  --muted-foreground: oklch(0.48 0.012 275);
+  --muted: oklch(0.94 0.006 275);
+  --muted-foreground: oklch(0.45 0.014 275);
   --accent: oklch(0.93 0.035 275);
   --accent-foreground: oklch(0.28 0.03 275);
   --destructive: oklch(0.55 0.2 25);
   --destructive-foreground: oklch(0.98 0.01 25);
-  --border: oklch(0.9 0.006 275);
-  --input: oklch(0.9 0.006 275);
+  --border: oklch(0.86 0.008 275);
+  --input: oklch(0.86 0.008 275);
   --ring: oklch(0.53 0.18 275);
 
   --shadow-color: oklch(0.5 0.02 275);
@@ -149,7 +151,8 @@
   --aurora-midnight-border: oklch(0.94 0.004 275 / 0.14);
   --aurora-midnight-ring: color-mix(in oklch, var(--primary) 55%, oklch(0.97 0 none));
 
-  --warning: oklch(0.62 0.16 70);
+  /* 0.52 (era 0.62): text-warning passa de 3,75:1 a 5,7:1 sobre o cartão (4,8:1 sobre o warning-soft). */
+  --warning: oklch(0.52 0.15 65);
   --warning-foreground: oklch(0.98 0.01 70);
   --warning-soft: color-mix(in oklch, var(--warning) 12%, var(--card));
   --warning-border: color-mix(in oklch, var(--warning) 28%, var(--border));
@@ -189,9 +192,9 @@
   --presentation-renewed: oklch(0.64 0.17 235);
   --presentation-new: oklch(0.66 0.18 350);
 
-  --app-bg-start: oklch(0.99 0.002 275);
-  --app-bg-mid: oklch(0.985 0.003 275);
-  --app-bg-end: oklch(0.978 0.004 275);
+  --app-bg-start: oklch(0.972 0.003 275);
+  --app-bg-mid: oklch(0.966 0.003 275);
+  --app-bg-end: oklch(0.958 0.004 275);
   --app-background: linear-gradient(180deg, var(--app-bg-start) 0%, var(--app-bg-mid) 55%, var(--app-bg-end) 100%);
 
   --header-bg: oklch(1 0 0);
@@ -219,8 +222,10 @@
   --muted-foreground: oklch(0.66 0.012 275);
   --accent: oklch(0.32 0.05 275);
   --accent-foreground: oklch(0.94 0.02 275);
-  --destructive: oklch(0.6 0.2 25);
-  --destructive-foreground: oklch(0.97 0.01 25);
+  /* 0.64 + texto escuro (0.2.4): text-destructive 4,8:1 sobre o cartão (era 4,07) e o texto do
+     botão vermelho 5,3:1 (era 3,98 com texto claro). */
+  --destructive: oklch(0.64 0.2 25);
+  --destructive-foreground: oklch(0.16 0.02 25);
   --border: oklch(0.3 0.008 275);
   --input: oklch(0.28 0.01 275);
   --ring: oklch(0.68 0.18 275);
